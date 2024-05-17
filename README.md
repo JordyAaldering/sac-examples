@@ -1,1 +1,1 @@
-# sac-examples
+# Single assignment C (SaC) example programs

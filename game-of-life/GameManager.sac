@@ -1,0 +1,39 @@
+module GameManager;
+
+use GameOfLife: all;
+use Structures: all;
+use SDLdisplay: all;
+
+export { play };
+
+#define PIXEL_SIZE 15
+
+void play(bool[2:shp] plane)
+{
+    disp = initDisplay(shp * PIXEL_SIZE);
+
+    while (true) {
+        stretch = stretchPlane(plane);
+        mono = planeToMonochrome(stretch);
+        drawArray(disp, mono);
+
+        Clock::sleep(1);
+
+        plane = evolve(plane);
+    }
+
+    destroyDisplay(disp);
+}
+
+inline
+bool[.,.] stretchPlane(bool[2:shp] arr)
+{
+    return { iv -> arr[iv / PIXEL_SIZE] | iv < shp * PIXEL_SIZE };
+}
+
+inline
+color[2:shp] planeToMonochrome(bool[2:shp] arr)
+{
+    c = toi(arr) * 255;
+    return { iv -> (color)[c[iv], c[iv], c[iv]] };
+}

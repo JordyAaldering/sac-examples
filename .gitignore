@@ -1,0 +1,4 @@
+# SaC generated files
+host/
+tree/
+*.out*

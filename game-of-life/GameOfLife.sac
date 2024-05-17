@@ -1,0 +1,38 @@
+module GameOfLife;
+use Structures: all;
+export { evolve };
+
+inline
+int[2:shp] relax(int[2:shp] arr, int[m,m] weights)
+{
+    return { iv -> sum({ ov -> weights[ov] * arr[mod(iv + ov - m / 2, shp)] })
+           | iv < shp };
+}
+
+inline
+int[2:shp] liveNeighborCount(bool[2:shp] arr)
+{
+    weights = [
+        [1,1,1],
+        [1,0,1],
+        [1,1,1]
+    ];
+    return relax(toi(arr), weights);
+}
+
+/**
+ * Any live cell with two or three live neighbors lives, otherwise it dies.
+ * Any dead cell with exactly three live neighbors becomes a live cell.
+ */
+inline
+bool evolve(bool wasAlive, int liveNeighbors)
+{
+    return liveNeighbors == 3 || (wasAlive && liveNeighbors == 2);
+}
+
+inline
+bool[2:shp] evolve(bool[2:shp] previousGeneration)
+{
+    liveNeighbors = liveNeighborCount(previousGeneration);
+    return { iv -> evolve(previousGeneration[iv], liveNeighbors[iv]) };
+}
