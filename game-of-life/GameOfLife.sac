@@ -1,5 +1,8 @@
 module GameOfLife;
+
 use Structures: all;
+use Cell: all;
+
 export { evolve };
 
 inline

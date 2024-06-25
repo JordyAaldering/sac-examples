@@ -1,0 +1,4 @@
+module Cell;
+export all;
+
+typedef int cell;
